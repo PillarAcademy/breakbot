@@ -1,0 +1,18 @@
+{
+  "name": "breakbot",
+  "version": "1.0.0",
+  "description": "Pillar Academy BreakBot",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0"
+  },
+  "dependencies": {
+    "dotenv": "^2.0.0",
+    "slack": "^8.1.0"
+  }
+}
