@@ -8,8 +8,13 @@ function postMessage(message) {
   slack.chat.postMessage({token: token, channel: channel, text: message}, function(err, resp) {});
 }
 
-var breakbot = require('./breakbot.js')(postMessage);
+slack.auth.test({token}, function(err, data) {
 
-rtm.message(breakbot.message);
-rtm.listen({token})
+  var breakbotId = '<@' + data.user_id + '>';
+
+  var breakbot = require('./breakbot.js')(postMessage, breakbotId);
+
+  rtm.message(breakbot.message);
+  rtm.listen({token})
+});
 
