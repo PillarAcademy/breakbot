@@ -8,11 +8,17 @@ function postMessage(message) {
   slack.chat.postMessage({token: token, channel: channel, text: message}, function(err, resp) {});
 }
 
+function getNumUsers(callback) {
+  slack.channels.info({token: token, channel: channel}, function(err, resp) {
+    callback(resp.channel.members.length);
+  });
+}
+
 slack.auth.test({token}, function(err, data) {
 
   var breakbotId = '<@' + data.user_id + '>';
 
-  var breakbot = require('./breakbot.js')({postMessage: postMessage, breakbotId: breakbotId});
+  var breakbot = require('./breakbot.js')({postMessage: postMessage, breakbotId: breakbotId, getNumUsers: getNumUsers});
 
   rtm.message(breakbot.message);
   rtm.listen({token})

@@ -7,6 +7,12 @@ module.exports = function(args) {
         ++count;
         var chatText = '' + count + (count == 1 ? ' break has ' : ' breaks have ') + 'been requested.';
         args.postMessage(chatText);
+
+        args.getNumUsers(function(numUsers) {
+          if (count >= numUsers/2) {
+            args.postMessage('Half of the attendees have requested a break!')
+          }
+        });
      }
 
      if (message.text == args.breakbotId + ' Reset') {
