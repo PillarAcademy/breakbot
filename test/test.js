@@ -29,4 +29,19 @@ describe('BreakBot responses', function() {
     expect(outgoingMessage).to.equal('2 breaks have been requested.')
     done();
   });
+
+  it('should confirm the break count has been reset', function(done) {
+    breakbot.message({text: userId + " Reset"});
+    expect(outgoingMessage).to.equal('Break count has been reset.')
+    done();
+  });
+
+  it('should update break count after reset', function(done) {
+    breakbot.message({text: userId + " Request"});
+    breakbot.message({text: userId + " Request"});
+    breakbot.message({text: userId + " Reset"});
+    breakbot.message({text: userId + " Request"});
+    expect(outgoingMessage).to.equal('1 break has been requested.');
+    done();
+  });
 });
