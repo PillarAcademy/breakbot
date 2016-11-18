@@ -12,7 +12,7 @@ slack.auth.test({token}, function(err, data) {
 
   var breakbotId = '<@' + data.user_id + '>';
 
-  var breakbot = require('./breakbot.js')(postMessage, breakbotId);
+  var breakbot = require('./breakbot.js')({postMessage: postMessage, breakbotId: breakbotId});
 
   rtm.message(breakbot.message);
   rtm.listen({token})

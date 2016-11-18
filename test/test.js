@@ -12,7 +12,7 @@ var breakbot;
 
 beforeEach(function(done) {
   outgoingMessage = null;
-  breakbot = require('./../breakbot.js')(postMessage, userId);
+  breakbot = require('./../breakbot.js')({postMessage: postMessage, breakbotId: userId});
   done();
 })
 
