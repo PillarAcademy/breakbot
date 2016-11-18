@@ -15,12 +15,16 @@ function getNumUsers(callback) {
 
 var breakbot;
 
-function sendRequest(bot) {
+function sendBreakRequest(bot) {
   bot.message({text: userId + " Request"});
 }
 
 function sendReset(bot) {
   bot.message({text: userId + " Reset"});
+}
+
+function sendCountRequest(bot) {
+  bot.message({text: userId + " Count"});
 }
 
 beforeEach(function(done) {
@@ -32,65 +36,65 @@ beforeEach(function(done) {
 
 describe('BreakBot responses', function() {
   it('should say one break is requested', function(done) {
-    sendRequest(breakbot);
+    sendBreakRequest(breakbot);
     expect(outgoingMessage).to.equal('1 break has been requested.');
     done();
   });
 
   it('should say two breaks are requested', function(done) {
-    sendRequest(breakbot);
-    sendRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
     expect(outgoingMessage).to.equal('2 breaks have been requested.');
     done();
   });
 
   it('should not alarm for 2 out of 5 users', function(done) {
-    sendRequest(breakbot);
-    sendRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
     expect(outgoingMessage).to.not.equal('Half of the attendees have requested a break!');
     done();
   });
 
   it('should alarm for 3 out of 5 users', function(done) {
-    sendRequest(breakbot);
-    sendRequest(breakbot);
-    sendRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
     expect(outgoingMessage).to.equal('Half of the attendees have requested a break!');
     done();
   });
 
   it('should alarm for 4 out of 5 users', function(done) {
-    sendRequest(breakbot);
-    sendRequest(breakbot);
-    sendRequest(breakbot);
-    sendRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
     expect(outgoingMessage).to.equal('Half of the attendees have requested a break!');
     done();
   });
 
   it('should not alarm for 2 out of 6 users', function(done) {
     numUsers = 6;
-    sendRequest(breakbot);
-    sendRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
     expect(outgoingMessage).to.not.equal('Half of the attendees have requested a break!');
     done();
   });
 
   it('should alarm for 3 out of 6 users', function(done) {
     numUsers = 6;
-    sendRequest(breakbot);
-    sendRequest(breakbot);
-    sendRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
     expect(outgoingMessage).to.equal('Half of the attendees have requested a break!');
     done();
   });
 
   it('should alarm for 4 out of 6 users', function(done) {
     numUsers = 6;
-    sendRequest(breakbot);
-    sendRequest(breakbot);
-    sendRequest(breakbot);
-    sendRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
     expect(outgoingMessage).to.equal('Half of the attendees have requested a break!');
     done();
   });
@@ -102,11 +106,26 @@ describe('BreakBot responses', function() {
   });
 
   it('should update break count after reset', function(done) {
-    sendRequest(breakbot);
-    sendRequest(breakbot);
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
     sendReset(breakbot);
-    sendRequest(breakbot);
+    sendBreakRequest(breakbot);
     expect(outgoingMessage).to.equal('1 break has been requested.');
+    done();
+  });
+
+  it('should report no breaks requested when asked', function(done) {
+    sendCountRequest(breakbot);
+    expect(outgoingMessage).to.equal('Nobody has requested a break.');
+    done();
+  });
+
+  it ('should report two breaks requested when asked if two breaks have been requested', function(done) {
+    sendBreakRequest(breakbot);
+    sendBreakRequest(breakbot);
+    outgoingMessage = null;
+    sendCountRequest(breakbot);
+    expect(outgoingMessage).to.equal('2 breaks have been requested.');
     done();
   });
 });
